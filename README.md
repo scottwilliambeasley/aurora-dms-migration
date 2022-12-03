@@ -2,7 +2,7 @@
 
 A Terragrunt template for streamlining SQL migrations to Aurora DB via Amazon DMS.
 
-Use this to establish your replication instance, and your source and destination endpoints within AWS.
+Use this to establish your replication instance, your destination Aurora DB cluster, and your source and destination replication endpoints within AWS.
 
 After establishing these, you can use the AWS Console to convert the schema from source to destination (using the DMS Migration Project Tool), and create the migration task to finish replication.
 
@@ -104,7 +104,7 @@ export AWS_SECRET_ACCESS_KEY=g8SQRJpmL7fbdTkjt9/bvxbGscnTKzX7glt4we6W
 export AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjEKb//////////wEaCXVzLWVhc3QtMSJHMEUCIQDDsYxFMtXpEzY1R9q/hqG0+sgNTUW46BfusJ77AOF2IwIgN7PZ3ZOA4yXtVPgsJj6skrYtZTakG6nv4PUCx/oekSQqsQMIv///////////ARABGgwyNDY1NjM1NjI3MTkiDGDeDAURhMvYmDOEuCqFA+Kl81IjRNCVQRcFbdYIIiDfTt1cymR0JQFKPUixFd4EtXtba90Fez+PWv7HU1C6GT+JrL3ZjCiO0qFwG8fnhG0eylwLMAZdKUAfoDaBZasDXgHmhtHq0tXURkD4bpnynI5LPO5JvX3PKFHOYM4cpz2Pq1X6ZCZpTN1NrQKitEDCMfN5TMLAKXS0+Xi+z51/y9nLyPGMA27ClShrmTCIRab8YppmXp3G/4wanzuXOdnea6z7kQvL5ojcDYijI1NPfICYPAsT3/hRhgmXOI6H202jrDx2ZQ1VMnFcl7/Nqdf/Rrmj43qRN8D8aNxBv3ZqC2XdaczGjOV+ABnINLjakdFUtFO8ECPsu/flice5LFzOYqPlxkr3D06hqhVRXsfd8u1DD08pc2yScxpMYXSjdorBiZriuK7DRAkrz/d4E9pbAnsCdZ4Puo/XPukPvYZ8OCOQEuPYyFDDoDk3EoSmZbD5xkOQ5z5NAlsZCPDd6leQh71hFOgUHKBsCdKZw6laSRQoNq91MIqirZwGOt0B+HfeB/7atpz3+RouwfQSSrDGK9o6hiXvSLWg9hi4Oi9LPevWU8kiYzujXixN64Qwn/+gPMmqwYJf8vBd55PCJkOFm7Tew46tWJsJtixqx7bHQ7pcIWShAUJaO/rOIwvCFRyhzJ/3Q/pIunFYjHWJtcHdHkZN0tEomorj5bL0kXisHjbSoF52GXk80HZDarLap9KlND9W80Efyevw7Vu+uzUqZBguyTrmA8eSvIyn+/oKbzwyRdVE/v8nvRaP0noTD1UH/7Ps9tUqEtR/85K1HooGadVriCg2Z59QqAU=
 ```
 
-3. Run `terragrunt run-all apply`
+3. Run `terragrunt run-all init` followed by `terragrunt run-all apply` in your shell.
 
 4. Follow the prompts, wait for Terraform to do its thing.
 

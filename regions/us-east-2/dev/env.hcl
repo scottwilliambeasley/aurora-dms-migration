@@ -23,7 +23,7 @@ locals {
   repl_instance_auto_minor_version_upgrade   = true
   repl_instance_allow_major_version_upgrade  = true
   repl_instance_apply_immediately            = true
-  repl_instance_engine_version               = "3.4.5"
+  repl_instance_engine_version               = "3.4.6"
   repl_instance_multi_az                     = true
   repl_instance_preferred_maintenance_window = "sun:10:30-sun:14:30"
   repl_instance_publicly_accessible          = false
@@ -54,7 +54,14 @@ locals {
   destination_server_name   = "dms-ex-dest.cluster-abcdefghijkl.us-east-1.rds.amazonaws.com"
   destination_ssl_mode      = "none"
 
-  // S3 Bucket used for remote state (only used if enabled within top level terragrunt.hcl)
+// Aurora Configurations
+  aurora_engine                     = "aurora-mysql"
+  aurora_engine_version             = "5.7"
+  aurora_instance_class             = "db.r6g.large"
+  storage_encrypted                 = true
+  monitoring_interval               = 10
+
+// S3 Bucket used for remote state (only used if enabled within top level terragrunt.hcl)
   state_bucket = "name-of-state-bucket"
 
 

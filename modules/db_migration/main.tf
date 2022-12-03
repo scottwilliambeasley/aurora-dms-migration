@@ -47,6 +47,31 @@ resource "aws_security_group" "dms_instance_sg" {
 
 }
 
+resource "aws_security_group" "aurora_sg" {
+  description = "SG for Aurora cluster."
+  vpc_id      = data.aws_vpc.pre_existing_vpc.id
+
+  # Allow all inbound traffic (tighten this after DMS replication finishes)
+  ingress {
+    description = "Allow all traffic incoming from subnets inside the VPC."
+    from_port   = 0
+    protocol    = "-1"
+    to_port     = 0
+    cidr_blocks     = [data.aws_vpc.pre_existing_vpc.cidr_block]
+  }
+
+  # Allow all outbound traffic from the cluster
+  egress {
+    description     = "Allow all outbound traffic."
+    from_port       = 0
+    protocol        = "-1"
+    to_port         = 0
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
+
+}
+
+
 #---------------------------------------------------------------------------
 # DMS Configuration
 #---------------------------------------------------------------------------
@@ -108,4 +133,71 @@ module "dms" {
     Environment = var.environment_name
   }
 
+}
+
+#---------------------------------------------------------------------------
+# Aurora Configuration
+#---------------------------------------------------------------------------
+
+module "aurora_cluster" {
+  source  = "terraform-aws-modules/rds-aurora/aws"
+
+  name           = "destination-aurora-db"
+  engine         = var.aurora_engine
+  engine_version = var.aurora_engine_version
+  instance_class = var.aurora_instance_class
+  instances = {
+    one = {}
+    2 = {
+      instance_class = "db.r6g.2xlarge"
+    }
+  }
+
+  vpc_id  = data.aws_vpc.pre_existing_vpc.id
+  subnets = [data.aws_subnet.subnet_a.id, data.aws_subnet.subnet_b.id]
+
+  allowed_security_groups = [aws_security_group.aurora_sg.id]
+  allowed_cidr_blocks     = [data.aws_vpc.pre_existing_vpc.cidr_block]
+
+  storage_encrypted   = var.storage_encrypted
+  apply_immediately   = true
+  monitoring_interval = var.monitoring_interval
+
+  db_parameter_group_name         = aws_db_parameter_group.default.name
+  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.default.name
+
+  enabled_cloudwatch_logs_exports = ["general"]
+
+  tags = {
+    Environment = var.environment_name
+    Terraform   = "true"
+  }
+
+}
+
+resource "aws_db_parameter_group" "default" {
+  name   = "rds-pg"
+  family = "aurora-mysql5.7"
+
+  parameter {
+    name  = "aurora_parallel_query"
+    value = "ON"
+  }
+
+}
+
+resource "aws_rds_cluster_parameter_group" "default" {
+  name        = "rds-cluster-sql"
+  family      = "aurora-mysql5.7"
+  description = "RDS default cluster parameter group"
+
+  parameter {
+    name  = "character_set_server"
+    value = "utf8"
+  }
+
+  parameter {
+    name  = "character_set_client"
+    value = "utf8"
+  }
 }

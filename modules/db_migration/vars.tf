@@ -164,3 +164,27 @@ variable "destination_server_name" {
 variable "destination_ssl_mode" {
   description = ""
 }
+
+#---------------------------------------------------------------------------
+# Aurora DB Settings
+#---------------------------------------------------------------------------
+
+variable "aurora_engine" {
+   description = "" 
+}
+
+variable "aurora_engine_version" {
+   description = "" 
+}
+
+variable "aurora_instance_class" {
+   description = "" 
+}
+
+variable storage_encrypted {
+   description = "" 
+}
+
+variable monitoring_interval {
+   description = "" 
+}
