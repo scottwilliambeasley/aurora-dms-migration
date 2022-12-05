@@ -19,7 +19,7 @@ How?
 
 Terragrunt does the following things:
 - allows the same Terraform code to be injected uniformly across as many separate deployments as you want
-- allows prepoluated configuration files (known as local files) containing variables to be automatically injected into deployments.
+- allows prepopulated configuration files (known as local files) containing variables to be automatically injected into deployments.
 - allows for dependencies to be defined between different deployment targets
 
 For the purposes of this project, we can manage all our Terraform deployments across all environments and customize each deployment using a set of configuration files.
@@ -71,7 +71,7 @@ Copy the URI of this project and run `git clone $URI` against it.
 
 You should now have a local copy of the project.
 
-## Step 2: Configuration the Template
+## Step 2: Configuration of the Template
 
 If your target deployment region is 'us-east-2' , and your target environment is 'dev' skip this step.
 
